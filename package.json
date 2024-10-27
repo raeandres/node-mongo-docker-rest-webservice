@@ -2,9 +2,10 @@
   "name": "mongo-docker-rest-webservice",
   "version": "1.0.0",
   "description": "A Simple RESTful web service using Node JS and Mongo Db containerized using docker compose",
-  "main": "index.js",
+  "main": "app.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
