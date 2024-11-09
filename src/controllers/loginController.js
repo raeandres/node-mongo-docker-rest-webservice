@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
-import { LoginSchema } from "../models/loginModel.js";
+import { UserSchema } from "../models/userModel.js";
 
-const Login = mongoose.model('Login', LoginSchema);
+const User = mongoose.model('User', UserSchema);
 
 const userLogin = (req, res) => {
     
-    Login.find({
+    User.find({
         username: req.body.username,
         password:req.body.password
     }).then((result) => {
@@ -18,7 +18,6 @@ const userLogin = (req, res) => {
                 session: result.session,  
             }
         }
-        console.log(response);
         console.log(response);
         res.status(200).send(response);
     }).catch((err) => {
