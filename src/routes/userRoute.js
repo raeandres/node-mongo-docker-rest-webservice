@@ -1,5 +1,7 @@
-const routes = (app) => {
+import userLogin from "../controllers/loginController.js";
 
+
+const routes = (app) => {
 
     const testCredential = {
         username: "test",
@@ -12,7 +14,7 @@ const routes = (app) => {
                 // this is mock. return success to client
                 res.status(200).send("Success!");
             } else {
-                res.send("Invalid credentials");
+                userLogin(req, res);
             }
         }, (req, res) => {
             res.send('Post request from login endpoint!');
