@@ -1,5 +1,5 @@
 # specify compose version
-version: "3.9"
+# version: "3.9" >> obsolete
 
 # sets the docker service scaffold
 # each service represents one container
