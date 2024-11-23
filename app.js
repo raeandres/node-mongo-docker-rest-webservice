@@ -1,5 +1,6 @@
 import express, {json} from "express";
 import routes from "./src/routes/userRoute.js"
+import  connectDB from "./db.js"
 
 
 const app = express();
@@ -7,6 +8,8 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(express.json());
+
+connectDB();
 
 app.get('/', (req, res) => {
     res.send('Hello world!');
