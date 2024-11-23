@@ -5,19 +5,39 @@
 # each service represents one container
 services:
 
-  # defines the container name
-    web:
-      # takes the build being done by the Dockerfile in the current directory (.)
-      build: .
-      # defines the container name explicitly
-      container_name: web
-      # defines the .env location to reference ports and other attributes that was defined in env file
-      env_file: ".env"
-      # defines port from inside and outside connection from the env file
-      ports:
-        - "${PORT}:${PORT}"
-      # defines the port number explicitly
-      #ports: '3000:3000'
-      # ensures that the container restarts automatically if exits unexpectedly'
-      restart: always
+  db:
+
+    image: mongo:latest
+    
+    restart: always
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+    ports:
+      - 27017:27017
+
+    volumes:
+      - mongo-data:/data/db
+
   
+  web:                            # defines the container name
+
+    build: .                      # takes the build being done by the Dockerfile in the current directory (.)
+   
+    container_name: web           # defines the container name explicitly
+    
+    env_file: ".env"              # defines the .env location to reference ports and other attributes that was defined in env file
+   
+    ports:                        # defines port from inside and outside connection from the env file
+      - "${PORT}:${PORT}"
+                                  # defines the port number explicitly
+                                  #ports: '3000:3000'
+      
+    restart: always               # ensures that the container restarts automatically if exits unexpectedly'
+    depends_on:
+      - db
+volumes:
+  mongo-data:
+
