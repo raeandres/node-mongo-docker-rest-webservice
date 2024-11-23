@@ -4,10 +4,13 @@ import { UserSchema } from "../models/userModel.js";
 const User = mongoose.model('User', UserSchema);
 
 const userLogin = (req, res) => {
+
+    const {username, password} = req.body;
+    const user = new User({username, password});
     
     User.find({
-        username: req.body.username,
-        password:req.body.password
+        username: user.username,
+        password: user.password
     }).then((result) => {
         let response = {
             "status": "Success",

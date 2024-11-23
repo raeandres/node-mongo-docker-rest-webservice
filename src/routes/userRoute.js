@@ -10,10 +10,10 @@ const routes = (app) => {
     }
 
     app.route('/login')
-        .post((req,res, next) => {
+        .get((req,res, next) => {
             if(req.body.username == testCredential.username) {
                 // this is mock. return success to client
-                res.status(200).send("Success!");
+                res.status(200).send("Login Success!");
             } else {
                 userLogin(req, res);
             }
