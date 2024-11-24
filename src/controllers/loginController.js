@@ -1,36 +1,30 @@
 import mongoose from "mongoose";
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { UserSchema } from "../models/userModel.js";
 
 const User = mongoose.model('User', UserSchema);
 
-const userLogin = (req, res) => {
+const userLogin = async (req, res) => {
 
     const {username, password} = req.body;
     const user = new User({username, password});
-    
-    User.find({
-        username: user.username,
-        password: user.password
-    }).then((result) => {
-        let response = {
-            "status": "Success",
-            "message": "Login Successful",
-            "data": {
-                username: result.username,
-                email: result.email,
-                session: result.session,  
-            }
-        }
-        console.log(response);
-        res.status(200).send(response);
-    }).catch((err) => {
-        let loginError = {
-            reason: err,
-            message: 'User Not Found'
-        }
-        res.status(401).send(loginError);
-        console.log(err);
-    });
+
+    try {
+        const user = await User.findOne( {username} );
+
+        if (!user) return res(400).json({ message: "Invalid credentials"});
+
+
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) return res(400).json({ message: "Invalid credentials"});
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn : '1h'});
+        res.json({ message: "Login Success!", token, user });
+    } catch (error) {
+        res.status(500).json({ message: "Server error", error: error.message});
+    }
 }
 
 export default userLogin;
